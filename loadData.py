@@ -1,10 +1,8 @@
 from imutils import paths
 from torch.utils.data import Dataset
-from torch.utils.data import DataLoader
-from torch.utils.data import sampler
 from PIL import Image
 import pandas as pd
-import torchvision.transforms as transforms
+
 
 class FlickrTrainDataset(Dataset):
     def __init__(self,path,transform=None):
@@ -50,10 +48,4 @@ def trainer(model,optimizer,loader_train,epochs=1):
                 print('Iteration %d, loss =',t," ",x)
 
 
-trans = transforms.Compose([transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
-train = FlickrTrainDataset('hi',trans)
-loader_train = DataLoader(train,32,sampler=sampler.SubsetRandomSampler(range(10000)))
-trainer(0,0,loader_train)
 
