@@ -1,8 +1,4 @@
-import loadData as ld
-from torch.utils.data import DataLoader
-from torch.utils.data import sampler
 from torch import nn
-import torchvision.transforms as transforms
 import torchvision.models as cnn
 
 
@@ -62,15 +58,3 @@ class Attention(nn.Module):
         attention_weighted_encoding = (encoder_out * alpha.unsqueeze(2)).sum(dim=1)  # (batch_size, encoder_dim)
 
         return attention_weighted_encoding, alpha
-
-# Pretrained model in Imagenet has mean = [0.485, 0.456, 0.406]
-# std = [0.229, 0.224, 0.225]
-# For models trained with other datasets,we should use different
-# modification
-
-trans = transforms.Compose([transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-
-train = ld.FlickrTrainDataset('hi',trans)
-loader_train = DataLoader(train,32,sampler=sampler.SubsetRandomSampler(range(10000)))
-ld.trainer(0,0,loader_train)

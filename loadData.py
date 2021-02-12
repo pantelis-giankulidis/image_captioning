@@ -1,14 +1,14 @@
 from imutils import paths
 from torch.utils.data import Dataset
 from PIL import Image
-import pandas as pd
-
+import wordCounter as wc
 
 class FlickrTrainDataset(Dataset):
-    def __init__(self,path,transform=None):
-        self.paths = list(paths.list_images('../flickr/flickr30k_images/flickr30k_images'))
+    def __init__(self,path_images,path_captions,transform=None):
+        self.paths = list(paths.list_images(path_images))
         self.paths.sort()
-        self.captions = pd.read_csv('../flickr/flickr30k_images/results.csv',sep='|')
+        self.word_to_idx,self.cap_lengths = wc.wordToIdx(path_captions)
+
         self.transform = transform
 
     def __len__(self):
@@ -19,8 +19,18 @@ class FlickrTrainDataset(Dataset):
         x = Image.open(x)
         if self.transform is not None:
             x = self.transform(x)
-        y = self.captions[5*item:5*(item+1)]
-        return x,y
+        caps = self.captions[5*item:5*(item+1)]
+        y=list()
+        i=0
+        for sentence in caps:
+            if(isinstance(sentence,float)):
+                continue
+            y.append(list())
+            for word in sentence:
+                y[i].append(self.word_to_idx[word.lower()])
+            i=i+1
+
+        return x,y,self.cap_lengths[item]
 
 
 def trainer(model,optimizer,loader_train,epochs=1):
