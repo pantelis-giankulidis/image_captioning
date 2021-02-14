@@ -14,9 +14,9 @@ import loadData as ld
 
 trans = transforms.Compose([transforms.ToTensor(),
      transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
-     transforms.Scale((128,128))])
+     transforms.Resize((128,128))])
 
 
 trainDataset = ld.FlickrTrainDataset('../flickr/flickr30k_images/flickr30k_images','../flickr/flickr30k_images/results.csv',trans)
-loader_train = DataLoader(trainDataset,32,sampler=sampler.SubsetRandomSampler(range(10000)))
+loader_train = DataLoader(trainDataset,8,sampler=sampler.SubsetRandomSampler(range(8)))
 train.train(data_loader=loader_train,encoder=model.Encoder())
