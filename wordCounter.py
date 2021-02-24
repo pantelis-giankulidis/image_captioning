@@ -29,6 +29,13 @@ class wordToIdx():
             maxCaptionLength = greater(maxCaptionLength,length)
 
         self.captionsLength=maxCaptionLength
+        self.vocab_size = id
+
+    def vocabSize(self):
+        return self.vocab_size
+
+    def maxCaptionLength(self):
+        return self.captionsLength
 
     def captionsToTensors(self,captions):
 

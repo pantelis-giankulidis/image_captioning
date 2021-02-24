@@ -1,6 +1,7 @@
 from imutils import paths
 from torch.utils.data import Dataset
 from PIL import Image
+from random import randrange
 import wordCounter as wc
 import pandas as pd
 import numpy as np
@@ -13,10 +14,15 @@ class FlickrTrainDataset(Dataset):
         self.captions = pd.read_csv(path_captions,sep='|')[' comment']
         self.transform = transform
 
-        self.paths = self.paths[:10]
-        self.captions = self.captions[:50]
+
     def __len__(self):
-        return 10
+        return 64
+
+    def getVocabSize(self):
+        return self.word_to_idx.vocabSize()
+
+    def getMaxCaptionsLength(self):
+        return self.word_to_idx.maxCaptionLength()
 
     def __getitem__(self, item):
         x = self.paths[item]
@@ -27,8 +33,10 @@ class FlickrTrainDataset(Dataset):
         caps = self.captions[5*item:5*(item+1)]
         y,z = self.word_to_idx.captionsToTensors(caps)
 
-        y=np.array(y)
-        z=np.array(z)
+        r=randrange(5)
+
+        y=np.array(y[r])
+        z=np.array(z[r])
 
         return x,y,z
 
