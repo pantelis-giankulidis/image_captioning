@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 import train
 import model
 import loadData
+import pickle
 
 device = torch.device("cpu")
 
@@ -22,22 +23,23 @@ trainDataset = loadData.FlickrTrainDataset('../flickr/flickr30k_images/flickr30k
 voc_size = trainDataset.getVocabSize()
 max_capt = trainDataset.getMaxCaptionsLength()
 
-#Define the models
-encoder = model.Encoder()
-decoder = model.Decoder(encoder_dim=2048,decoder_dim=512,attention_dim=256,vocab_size=voc_size)
-embedding=model.Embedding(vocab_size=voc_size,embedding_dim=128)
+<<<<<<< HEAD
+
+=======
+Encoder = model.Encoder()
+Decoder = model.Decoder(encoder_dim=2048,decoder_dim=512,attention_dim=256,vocab_size-voc_size)
+Embedding = model.Embedding(vocab_size=voc_size,embedding_dim=128)
 
 loader_train = DataLoader(trainDataset,32,sampler=sampler.SubsetRandomSampler(range(32)))
-train.train(data_loader=loader_train,encoder=encoder,decoder=decoder,embedding=embedding,max_caption_length=max_capt)
+train.train(data_loader=loader_train,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_caption_length=max_capt)
 
 
-modelCnn_json = encoder.to_json()
-modelRnn_json = decoder.to_json()
-modelEmb = embedding.to_json()
-
-with open("model.json", "w") as json_file:
-    modelCnn_json.write(modelCnn_json)
-
-
-# serialize weights to HDF5
-encoder.save_weights("model.h5")
+with open('encoder-5',"wb") as f:
+     pickle.dump(Encoder,f)
+     
+with open('decoder-5',"wb") as f:
+     pickle.dump(Decoder,f)
+     
+with open('vocab',"wb") as f:
+     pickle.dump(Embedding,f)
+>>>>>>> 01f2f3fdcbe62dc48696f1b6d08e5c4d94dfcc54
