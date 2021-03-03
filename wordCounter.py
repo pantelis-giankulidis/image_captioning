@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import csv
 
 greater = lambda a,b: a if a>b else b
 
@@ -37,6 +38,13 @@ class wordToIdx():
     def maxCaptionLength(self):
         return self.captionsLength
 
+    def storeVocab(self):
+    	w = csv.writer(open("vocabulary.csv","w"))
+    	for key,val in self.word_to_idx.items():
+    		w.writerow([val,key])
+    	
+	
+    
     def captionsToTensors(self,captions):
 
         x=list()
@@ -64,10 +72,10 @@ class wordToIdx():
             i =i+1
         return x,y
 
-'''caps = pd.read_csv('../flickr/flickr30k_images/results.csv',sep='|')[" comment"]
+
 
 wi = wordToIdx('../flickr/flickr30k_images/results.csv',24)
 
-indexes,lengths = wi.captionsToTensors(caps)'''
+wi.storeVocab()
 
 
