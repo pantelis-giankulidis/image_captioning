@@ -24,18 +24,12 @@ voc_size = trainDataset.getVocabSize()
 max_capt = trainDataset.getMaxCaptionsLength()
 
 Encoder = model.Encoder()
-Decoder = model.Decoder(encoder_dim=2048,decoder_dim=512,attention_dim=256,vocab_size-voc_size)
+Decoder = model.Decoder(encoder_dim=2048,decoder_dim=512,attention_dim=256,vocab_size=voc_size)
 Embedding = model.Embedding(vocab_size=voc_size,embedding_dim=128)
 
 loader_train = DataLoader(trainDataset,32,sampler=sampler.SubsetRandomSampler(range(32)))
-train.train(data_loader=loader_train,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_caption_length=max_capt)
+#train.train(data_loader=loader_train,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_caption_length=max_capt)
 
-
-with open('encoder-5',"wb") as f:
-     pickle.dump(Encoder,f)
-     
-with open('decoder-5',"wb") as f:
-     pickle.dump(Decoder,f)
-     
-with open('vocab',"wb") as f:
-     pickle.dump(Embedding,f)
+torch.save(Encoder,'Encoder')
+torch.save(Decoder,'Decoder')
+torch.save(Embedding,'Embedding')
