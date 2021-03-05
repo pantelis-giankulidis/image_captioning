@@ -14,4 +14,12 @@ The encoder takes an RGB image as input and generates a new **HxWxC** tensor,whe
 Because the model isn't used for image classification,the last fully connected layer is replaced by a new convolution layer of C windows , in order for the encoder to output the desired tensor.
 
 #### Decoder
-The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) that generates a caption given the representation of the image created by the Encoder.
+The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) that generates a caption given the representation of the image created by the Encoder and the caption from the previous LSTM cell,after it gets through the attention mechanism and the embedding layer.
+
+One LSTM cell,tries to generate the next word by taking into consideration three aspects;the parameters of the "previous" cell(in fact we have only multiple instances of one cell),the area in the image where it must focus(which is the output of the attention mechanism) and the embedding of the word that has been generated last(the output of the embedding)
+
+#### Attention 
+The architecture here is novel.It follows some basic concepts from previous implementations(see the links below),but is a brand new.
+
+#### Embedding
+We use a pretrained embedding of 256 size.It may seem small,but it achieves adequate "compression" of the words. 
