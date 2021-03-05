@@ -14,3 +14,4 @@ The encoder takes an RGB image as input and generates a new **HxWxC** tensor,whe
 Because the model isn't used for image classification,the last fully connected layer is replaced by a new convolution layer of C windows , in order for the encoder to output the desired tensor.
 
 #### Decoder
+The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) that generates a caption given the representation of the image created by the Encoder.
