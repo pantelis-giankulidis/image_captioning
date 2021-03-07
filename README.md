@@ -24,10 +24,25 @@ The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) t
 One LSTM cell,tries to generate the next word by taking into consideration three aspects;the parameters of the "previous" cell(in fact we have only multiple instances of one cell),the area in the image where it must focus(which is the output of the attention mechanism) and the embedding of the word that has been generated last(the output of the embedding)
 
 #### Attention 
-The architecture here is novel.It follows some basic concepts from previous implementations(see the links below),but is a brand new.It has three linear layers for more independent parameter learning,instead of the traditional two.This way,both the image region and the embedding are attentioned before used as input to the decoder.
+The architecture here is novel.It follows some basic concepts from previous implementations(see the links below),but is a brand new.It has three linear layers for more independent parameter learning,instead of the traditional two.This way,both the image region and the embedding are attentioned before used as input to the decoder.In both cases,soft attention is used.In this type of attention,the weights of the weights sum to 1.In the image,the weights represent the propability
+that the pixel is the place to look when generating the next word.In the embedding,the weights represent the importance of the previous word to the generation of the next word.This makes the captions more syntactically correct.
 
 #### Embedding
-We use a pretrained embedding of 256 size.It may seem small,but it achieves adequate "compression" of the words.There is also the option to fine tune the embedding but this opstion wasn't used in the experiments. 
+We use a pretrained torch embedding of 256 size.
+`nn.Embedding(n,256)`
+It may seem small,but it achieves adequate "compression" of the words.There is also the option to fine tune the embedding but this opstion wasn't used in the experiments. 
+
+## Training
+For training,the flickr30k dataset available in <a href="https://www.kaggle.com/hsankesara/flickr-image-dataset">kaggle</a> was used.A torch `Dataset`
+was created and a torch `Dataloader` of batch size 32.The loss function that was used is the **crossEntropyLoss**.The raw scores from the final layer of the decoder are submmited and compared,using the aforementioned loss function with the actual captions.The feedback is than propagated to the LSTM to be trained.
+As it is already mentioned,the encoder is already trained,as well as the embedding.
+It is worth noticing,that the writers of the original paper,suggest the use of the **double stochastic regularization** loss.In the provided git there is a simple explanation about that.
 
 ## Performance
-The model was trained with the flickr30k dataset.
+The model was trained with the flickr30k dataset.To assess its performance,we use the BLUE-1(bilingual evaluation understudy),a popular choice for NLP model evaluation.I didn't run many experiments,but the results are presented in the array below.I only trained the decoder,in all the experiments,with the same hyperparameters(see source code)
+| Training epochs | Validation BLEU-1 score | Test BLEU-1 score |
+| ----------------|-------------------------|-------------------|
+| 1               |  18.85                  | 16.91             |
+| 3               |  18.44                  | 18.16             |
+| 4               |  18.91                  | 18.49             |
+| 5               |  20.78                  | 18.90             |
