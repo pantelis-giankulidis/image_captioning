@@ -24,10 +24,10 @@ The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) t
 One LSTM cell,tries to generate the next word by taking into consideration three aspects;the parameters of the "previous" cell(in fact we have only multiple instances of one cell),the area in the image where it must focus(which is the output of the attention mechanism) and the embedding of the word that has been generated last(the output of the embedding)
 
 #### Attention 
-The architecture here is novel.It follows some basic concepts from previous implementations(see the links below),but is a brand new.
+The architecture here is novel.It follows some basic concepts from previous implementations(see the links below),but is a brand new.It has three linear layers for more independent parameter learning,instead of the traditional two.This way,both the image region and the embedding are attentioned before used as input to the decoder.
 
 #### Embedding
-We use a pretrained embedding of 256 size.It may seem small,but it achieves adequate "compression" of the words. 
+We use a pretrained embedding of 256 size.It may seem small,but it achieves adequate "compression" of the words.There is also the option to fine tune the embedding but this opstion wasn't used in the experiments. 
 
 ## Performance
 The model was trained with the flickr30k dataset.
