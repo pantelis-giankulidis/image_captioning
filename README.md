@@ -25,3 +25,6 @@ The architecture here is novel.It follows some basic concepts from previous impl
 
 #### Embedding
 We use a pretrained embedding of 256 size.It may seem small,but it achieves adequate "compression" of the words. 
+
+## Performance
+The model was trained with the flickr30k dataset.
