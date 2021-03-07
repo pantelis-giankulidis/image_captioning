@@ -15,7 +15,10 @@ Because the model isn't used for image classification,the last fully connected l
 
 #### Decoder
 The decoder is an Long short term memory (LSTM) recurrent neural network (RNN) that generates a caption given the representation of the image created by the Encoder and the caption from the previous LSTM cell,after it gets through the attention mechanism and the embedding layer.
-![Diagram1](https://user-images.githubusercontent.com/67536962/110094371-6a82d600-7da4-11eb-8403-65461dbd4a20.png)
+
+![Unt](https://user-images.githubusercontent.com/67536962/110251298-8a72ef00-7f88-11eb-8308-648e798d77b1.jpg)
+
+
 
 
 One LSTM cell,tries to generate the next word by taking into consideration three aspects;the parameters of the "previous" cell(in fact we have only multiple instances of one cell),the area in the image where it must focus(which is the output of the attention mechanism) and the embedding of the word that has been generated last(the output of the embedding)
