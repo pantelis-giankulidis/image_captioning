@@ -1,10 +1,8 @@
 from torch import nn
 import torch
 
-#decoder_optimizer = torch.optim.Adam(params=filter(lambda p: p.requires_grad, decoder.parameters()),lr=0.01)
-#encoder_optimizer = torch.optim.Adam(params=filter(lambda p: p.requires_grad, encoder.parameters()),lr=0.02)
+decoder_optimizer = torch.optim.Adam(params=filter(lambda p: p.requires_grad, decoder.parameters()),lr=0.01)
 
-alpha_c = 1.01 # regularization parameter for 'doubly stochastic attention', as in the paper
 print_freq = 2
 
 def train(data_loader,encoder,decoder,embedding,max_caption_length,epochs=1):
@@ -34,14 +32,12 @@ def train(data_loader,encoder,decoder,embedding,max_caption_length,epochs=1):
 
             # Back prop.
             decoder_optimizer.zero_grad()
-            #if encoder_optimizer is not None:
-            #	encoder_optimizer.zero_grad()
+            
             loss.backward()
 
         	# Update weights
             decoder_optimizer.step()
-            #if encoder_optimizer is not None:
-            #	encoder_optimizer.step()
+            
 
             # Print status
             if i % print_freq == 0:
