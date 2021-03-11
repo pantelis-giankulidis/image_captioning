@@ -5,18 +5,30 @@ from random import randrange
 import wordCounter as wc
 import pandas as pd
 import numpy as np
+import random
 
 class FlickrTrainDataset(Dataset):
-    def __init__(self,path_images,path_captions,transform=None):
+    def __init__(self,path_images,path_captions,transform=None,type=None):
+        
         self.paths = list(paths.list_images(path_images))
         self.paths.sort()
-        self.word_to_idx = wc.wordToIdx(path_captions,length=24)
         self.captions = pd.read_csv(path_captions,sep='|')[' comment']
+        
+        ## Split the dataset in train and validation
+        ## Sample without replacement the 99% of the total images to take train images
+        indexes_of_train = random.sample(range(len(self.paths)),int(0.99*len(self.paths)))
+        
+        if type=='TRAIN':
+            self.paths = self.paths[indexes_of_train]
+            self.captions = self.captions[indexes_of_train]
+        else:
+            
+        self.word_to_idx = wc.wordToIdx(path_captions,length=24)
         self.transform = transform
 
 
     def __len__(self):
-        return 64
+        return len(paths)
 
     def getVocabSize(self):
         return self.word_to_idx.vocabSize()
