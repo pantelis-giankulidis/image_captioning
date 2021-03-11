@@ -19,10 +19,13 @@ class FlickrTrainDataset(Dataset):
         indexes_of_train = random.sample(range(len(self.paths)),int(0.99*len(self.paths)))
         
         if type=='TRAIN':
-            self.paths = self.paths[indexes_of_train]
-            self.captions = self.captions[indexes_of_train]
+            self.paths = [self.paths[i] for i in indexes_of_train]
+            self.captions = [self.captions[i] for i in indexes_of_train]
         else:
-            
+            self.paths = [self.paths[i] for i in self.paths if i not in indexes_of_train]
+            self.captions = [self.captions[i] for i in self.captions if i not in indexes_of_train]
+            return
+        
         self.word_to_idx = wc.wordToIdx(path_captions,length=24)
         self.transform = transform
 
@@ -45,6 +48,7 @@ class FlickrTrainDataset(Dataset):
         caps = self.captions[5*item:5*(item+1)]
         y,z = self.word_to_idx.captionsToTensors(caps)
 
+        # Pick one of the captions for 1-1 image-caption training
         r=randrange(5)
 
         y=np.array(y[r])
@@ -53,29 +57,7 @@ class FlickrTrainDataset(Dataset):
         return x,y,z
 
 
-def trainer(model,optimizer,loader_train,epochs=1):
-    print_every=3
-    for e in range(epochs):
-        for t ,(x,y) in enumerate(loader_train):
-            #model.train()  # put model to training mode
-            #x = x.to(device=device, dtype=dtype)  # move to device, e.g. GPU
-            #y = y.to(device=device, dtype=torch.long)
 
-            #scores = model(x)
-            #loss = F.cross_entropy(scores, y)
-
-
-            #optimizer.zero_grad()
-
-            # loss.backward() computes dloss/dx for every parameter x which has requires_grad=True.
-            #loss.backward()
-
-            # Actually update the parameters of the model using the gradients
-            # computed by the backwards pass.
-            #optimizer.step()
-
-            if t % print_every == 0:
-                print('Iteration %d, loss =',t," ",x)
 
 
 
