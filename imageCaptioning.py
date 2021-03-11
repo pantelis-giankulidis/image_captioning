@@ -52,7 +52,7 @@ def main():
      best_bleu = 0 #The best blue score by now
      for i in range(epochs):
           ## One epoch's training
-          train.train(data_loader=loader_train,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_caption_length=max_capt)
+          train.train(data_loader=loader_train,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_caption_length=max_capt,optim=decoder_optimizer)
           ## One epoch's validation
           new_bleu = train.validate(data_loader=val_loader,encoder=Encoder,decoder=Decoder,embedding=Embedding,max_capt)
           
