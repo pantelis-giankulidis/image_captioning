@@ -43,6 +43,8 @@ def train(data_loader,encoder,decoder,embedding,max_caption_length,decoder_optim
                 
 def validate(val_loader, encoder, decoder, embedding, max_caption_length):
     
+    ''' The most lines of code of this function come from the repo: https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Image-Captioning'''
+    
     decoder.eval()  # eval mode (no dropout or batchnorm)
     encoder.eval()
     embedding.eval()
@@ -58,7 +60,7 @@ def validate(val_loader, encoder, decoder, embedding, max_caption_length):
     hypotheses = list()  # hypotheses (predictions)
 
     # explicitly disable gradient calculation to avoid CUDA memory error
-    # solves the issue #57
+    # solves the issue https://stackoverflow.com/questions/54374935/how-to-fix-this-strange-error-runtimeerror-cuda-error-out-of-memory
     with torch.no_grad():
         # Batches
         for i, (imgs, caps, caplens, allcaps) in enumerate(val_loader):
